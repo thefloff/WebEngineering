@@ -93,6 +93,14 @@ public class Application extends Controller {
         return ok(jeopardy.render());
     }
 
+    public static Result newGame() {
+        return ok(jeopardy.render());
+    }
+
+    public static Result winner() {
+        return ok(winner.render());
+    }
+
     // TODO: MISSING:   question -> jeopardy
     // TODO: MISSING:   everything with winner
 
