@@ -1,5 +1,9 @@
 package controllers;
 
+import at.ac.tuwien.big.we15.lab2.api.Avatar;
+import model.UserJPA;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 import play.mvc.*;
 import play.data.Form;
 import views.html.*;
@@ -8,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import play.Logger;
+
+import javax.persistence.Query;
 
 import static play.data.Form.form;
 
@@ -19,11 +25,14 @@ public class Application extends Controller {
     }
 
     //on login attempt in login-page
+    @Transactional
     public static Result login() {
         Form<UserLogin> loginForm = form(UserLogin.class).bindFromRequest();
         String username = loginForm.get().username;
         String password = loginForm.get().password;
 
+        Query q = JPA.em().createQuery("select p from UserJPA p where name = ?1");
+       // q.setParameter();
         // TODO: check if correct, create game etc
 
         return ok(jeopardy.render());
@@ -35,6 +44,7 @@ public class Application extends Controller {
     }
 
     //on registration attempt on registration-page
+    @Transactional
     public static Result register() {
         Form<UserRegister> registrationForm = form(UserRegister.class).bindFromRequest();
         String firstname = registrationForm.get().firstname;
@@ -53,7 +63,27 @@ public class Application extends Controller {
                 "username: "+ username + "\n" +
                 "password: " + password);
 
-        // TODO: check if ok, create user in DB etc
+
+        UserJPA user = new UserJPA();
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setBirthdate(birthdate);
+        if(gender.equals("male")) {
+            user.setMale(true);
+        }else {
+            user.setMale(false);
+        }
+        if(avatar != null) {
+            user.setAvatar(Avatar.valueOf(avatar.replace("-", "_").toUpperCase()));
+        }else {
+            // validation error
+        }
+        user.setName(username);
+        user.setPassword(password);
+
+        // TODO: validation
+
+        JPA.em().persist(user);
 
         return ok(authentication.render());
     }
