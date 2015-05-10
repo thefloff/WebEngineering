@@ -47,11 +47,11 @@ public class Application extends Controller {
         List<UserJPA> users = q.getResultList();
         if(users.size() != 1) {
              Logger.debug("User " + username + " not found!");
-            // todo return with validtor
+             return badRequest(authentication.render());
         }
         if(!users.get(0).getPassword().equals(password)) {
             Logger.debug("Incorrect password!");
-            // todo return with validtor
+            return badRequest(authentication.render());
         }
 
         JeopardyGame game = factory.createGame(users.get(0));
@@ -82,9 +82,8 @@ public class Application extends Controller {
         Form<UserRegister> registrationForm = form(UserRegister.class).bindFromRequest();
 
         if(registrationForm.hasErrors()) {
-            registrationForm.reject("");
-            Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
-            return badRequest(registration.render(form));
+            registrationForm.reject("Errors");
+            return badRequest(registration.render(registrationForm));
         } else {
             String firstname = registrationForm.get().firstname;
             String lastname = registrationForm.get().lastname;
@@ -121,7 +120,23 @@ public class Application extends Controller {
             user.setName(username);
             user.setPassword(password);
 
-            // TODO: validation
+            Query q = JPA.em().createQuery("select p from UserJPA p where name = :name");
+            q.setParameter("name", username);
+            List<UserJPA> users = q.getResultList();
+            if(users.size() > 0) {
+                Logger.debug("Username bereits vergeben");
+                registrationForm.reject("Username bereits vergeben");
+                return badRequest(registration.render(registrationForm));
+            }
+
+            if(username == null || username.length() < 4 || username.length() > 8) {
+                Logger.debug("Username muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                return badRequest(registration.render(registrationForm));
+            }
+            if(password == null || password.length() < 4 || password.length() > 8) {
+                Logger.debug("Passwort muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                return badRequest(registration.render(registrationForm));
+            }
 
             JPA.em().persist(user);
 
