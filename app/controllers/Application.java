@@ -90,7 +90,7 @@ public class Application extends Controller {
             }
         }
         Logger.debug(answerString);
-       return ok(main.render(answerString, null));
+        return ok(jeopardy.render());
     }
 
     // TODO: MISSING:   question -> jeopardy
