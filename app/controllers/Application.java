@@ -63,17 +63,16 @@ public class Application extends Controller {
 
     //on navigation to register from login-page
     public static Result goToRegister() {
-        Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
-
         UserRegister defaultValues = new UserRegister();
-        defaultValues.firstname = "Vorname";
-        defaultValues.lastname = "";
-        defaultValues.gender = "";
-        defaultValues.avatar = "";
+        defaultValues.firstname = "Vorname2";
+        defaultValues.lastname = "test";
+        defaultValues.gender = "test";
+        defaultValues.avatar = "test";
         defaultValues.birthdate = new Date();
-        defaultValues.username = "";
-        defaultValues.password = "";
-        form.fill(defaultValues);
+        defaultValues.username = "test";
+        defaultValues.password = "test";
+        Form<UserRegister> form = form(UserRegister.class).fill(defaultValues);
+
         return ok(registration.render(true, form));
     }
 
