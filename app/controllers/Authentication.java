@@ -10,7 +10,7 @@ public class Authentication extends Security.Authenticator {
 
     @Override
     public String getUsername(Context ctx) {
-        return " ";
+        return ctx.session().get("connected");
     }
 
     @Override

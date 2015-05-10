@@ -162,6 +162,7 @@ nav ul li {
    font-weight: bold;
    text-align: center;
    color: #fff;
+    min-width: 160px;
 }
 
 .greenlink:hover {
