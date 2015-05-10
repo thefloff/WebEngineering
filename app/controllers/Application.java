@@ -2,6 +2,7 @@ package controllers;
 
 import at.ac.tuwien.big.we15.lab2.api.Avatar;
 import model.UserJPA;
+import play.data.validation.Constraints;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.*;
@@ -16,6 +17,7 @@ import play.Logger;
 import javax.persistence.Query;
 
 import static play.data.Form.form;
+import static play.data.validation.Constraints.Required;
 
 public class Application extends Controller {
 
@@ -40,52 +42,69 @@ public class Application extends Controller {
 
     //on navigation to register from login-page
     public static Result goToRegister() {
-        return ok(registration.render());
+        Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
+
+        UserRegister defaultValues = new UserRegister();
+        defaultValues.firstname = "Vorname";
+        defaultValues.lastname = "";
+        defaultValues.gender = "";
+        defaultValues.avatar = "";
+        defaultValues.birthdate = new Date();
+        defaultValues.username = "";
+        defaultValues.password = "";
+        form.fill(defaultValues);
+        return ok(registration.render(true, form));
     }
 
     //on registration attempt on registration-page
     @Transactional
     public static Result register() {
         Form<UserRegister> registrationForm = form(UserRegister.class).bindFromRequest();
-        String firstname = registrationForm.get().firstname;
-        String lastname = registrationForm.get().lastname;
-        Date birthdate = registrationForm.get().birthdate;
-        String gender = registrationForm.get().gender;
-        String avatar = registrationForm.get().avatar;
-        String username = registrationForm.get().username;
-        String password = registrationForm.get().password;
 
-        Logger.debug("firstname: " + firstname + "\n" +
-                "lastname: "+ lastname + "\n" +
-                "birthdate: "+ birthdate +"\n" +
-                "gender: "+ gender + "\n"+
-                "avatar: "+ avatar + "\n" +
-                "username: "+ username + "\n" +
-                "password: " + password);
+        if(registrationForm.hasErrors()) {
+            Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
+            return badRequest(registration.render(false, form));
+        } else {
+            String firstname = registrationForm.get().firstname;
+            String lastname = registrationForm.get().lastname;
+            Date birthdate = registrationForm.get().birthdate;
+            String gender = registrationForm.get().gender;
+            String avatar = registrationForm.get().avatar;
+            String username = registrationForm.get().username;
+            String password = registrationForm.get().password;
+
+            Logger.debug("firstname: " + firstname + "\n" +
+                    "lastname: " + lastname + "\n" +
+                    "birthdate: " + birthdate + "\n" +
+                    "gender: " + gender + "\n" +
+                    "avatar: " + avatar + "\n" +
+                    "username: " + username + "\n" +
+                    "password: " + password);
 
 
-        UserJPA user = new UserJPA();
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setBirthdate(birthdate);
-        if(gender.equals("male")) {
-            user.setMale(true);
-        }else {
-            user.setMale(false);
+            UserJPA user = new UserJPA();
+            user.setFirstname(firstname);
+            user.setLastname(lastname);
+            user.setBirthdate(birthdate);
+            if (gender.equals("male")) {
+                user.setMale(true);
+            } else {
+                user.setMale(false);
+            }
+            if (avatar != null) {
+                user.setAvatar(Avatar.valueOf(avatar.replace("-", "_").toUpperCase()));
+            } else {
+                // validation error
+            }
+            user.setName(username);
+            user.setPassword(password);
+
+            // TODO: validation
+
+            JPA.em().persist(user);
+
+            return ok(authentication.render());
         }
-        if(avatar != null) {
-            user.setAvatar(Avatar.valueOf(avatar.replace("-", "_").toUpperCase()));
-        }else {
-            // validation error
-        }
-        user.setName(username);
-        user.setPassword(password);
-
-        // TODO: validation
-
-        JPA.em().persist(user);
-
-        return ok(authentication.render());
     }
 
     //on logout pressed on any page
@@ -140,8 +159,17 @@ public class Application extends Controller {
         public Date birthdate;
         public String gender;
         public String avatar;
+        @Required
         public String username;
+        @Required
         public String password;
+
+        public String validate() {
+            if(firstname.equals("floff")) {
+                return "Name already taken!";
+            }
+            return null;
+        }
     }
 
     public static class QuestionSelection {
