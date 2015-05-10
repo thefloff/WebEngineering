@@ -163,8 +163,12 @@ select {
    margin-bottom: 1em;
 }
 
-input.error{
-    border: 0.15ex solid #E60808 !important;
+dd.error {
+    color:  #E60808;
+    font-size: 1.5ex;
+    margin-top: -16px;
+    margin-left: 200px;
+    float: right;
 }
 
 option {

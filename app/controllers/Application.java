@@ -3,6 +3,8 @@ package controllers;
 import at.ac.tuwien.big.we15.lab2.api.Avatar;
 import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
 import at.ac.tuwien.big.we15.lab2.api.JeopardyGame;
+import at.ac.tuwien.big.we15.lab2.api.QuestionDataProvider;
+import at.ac.tuwien.big.we15.lab2.api.impl.JSONQuestionDataProvider;
 import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
 import model.UserJPA;
 import play.data.validation.Constraints;
@@ -12,6 +14,9 @@ import play.mvc.*;
 import play.data.Form;
 import views.html.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.*;
 
 import play.Logger;
@@ -24,7 +29,18 @@ import static play.data.validation.Constraints.Required;
 public class Application extends Controller {
 
     private static JeopardyFactory factory = new PlayJeopardyFactory("data.de.json");
+    private static QuestionDataProvider questionDataProvider;
     private static Map<String, JeopardyGame> games = new HashMap<>();
+
+    static {
+        InputStream is = null;
+        try {
+            is = new FileInputStream("conf/data.de.json");
+        } catch (FileNotFoundException e) {
+            Logger.error("No Question Data found \n" + e.getStackTrace());
+        }
+        questionDataProvider = new JSONQuestionDataProvider(is, factory);
+    }
 
     //show login page
     public static Result index() {
@@ -53,6 +69,8 @@ public class Application extends Controller {
             Logger.debug("Incorrect password!");
             return badRequest(authentication.render());
         }
+
+
 
         JeopardyGame game = factory.createGame(users.get(0));
         games.put(username, game);
@@ -126,16 +144,18 @@ public class Application extends Controller {
             List<UserJPA> users = q.getResultList();
             if(users.size() > 0) {
                 Logger.debug("Username bereits vergeben");
-                registrationForm.reject("Username bereits vergeben");
+                registrationForm.reject("username", "Username bereits vergeben");
                 return badRequest(registration.render(registrationForm));
             }
 
             if(username == null || username.length() < 4 || username.length() > 8) {
                 Logger.debug("Username muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                registrationForm.reject("username", "Username muss mindestens 4 und höchstens 8 Zeichen lang sein!");
                 return badRequest(registration.render(registrationForm));
             }
             if(password == null || password.length() < 4 || password.length() > 8) {
                 Logger.debug("Passwort muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                registrationForm.reject("password", "Passwort muss mindestens 4 und höchstens 8 Zeichen lang sein!");
                 return badRequest(registration.render(registrationForm));
             }
 
@@ -197,8 +217,6 @@ public class Application extends Controller {
 
     // TODO: MISSING:   question -> jeopardy
     // TODO: MISSING:   everything with winner
-
-
 
 
 
