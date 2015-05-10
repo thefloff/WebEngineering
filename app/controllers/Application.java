@@ -125,16 +125,18 @@ public class Application extends Controller {
             List<UserJPA> users = q.getResultList();
             if(users.size() > 0) {
                 Logger.debug("Username bereits vergeben");
-                registrationForm.reject("Username bereits vergeben");
+                registrationForm.reject("username", "Username bereits vergeben");
                 return badRequest(registration.render(registrationForm));
             }
 
             if(username == null || username.length() < 4 || username.length() > 8) {
                 Logger.debug("Username muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                registrationForm.reject("username", "Username muss mindestens 4 und höchstens 8 Zeichen lang sein!");
                 return badRequest(registration.render(registrationForm));
             }
             if(password == null || password.length() < 4 || password.length() > 8) {
                 Logger.debug("Passwort muss mindestens 4 und höchstens 8 Zeichen lang sein!");
+                registrationForm.reject("password", "Passwort muss mindestens 4 und höchstens 8 Zeichen lang sein!");
                 return badRequest(registration.render(registrationForm));
             }
 
@@ -187,8 +189,6 @@ public class Application extends Controller {
 
     // TODO: MISSING:   question -> jeopardy
     // TODO: MISSING:   everything with winner
-
-
 
 
 

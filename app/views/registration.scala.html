@@ -102,14 +102,11 @@
 						<option value="war-machine">War Machine</option>
 						<option value="wolverine">Wolverine</option>
                     </select>
-					
-					<label for="username">Benutzername*:</label>
-                    <input id="username" type="text" required="required" pattern="\w{4,8}" name="username"/>
-                    <div id="error_msg_username" class="hide" role="alert">Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
-                    
-                    <label for="password">Passwort*:</label>
-                    <input id="password" type="password" required="required" pattern="\w{4,8}" name="password"/>
-                    <div id="error_msg_password" class="hide" role="alert">Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
+
+                    @helper.inputText(registerForm("username"), '_label -> "Benutzername*:", '_showConstraints -> false)
+
+                    @helper.inputPassword(registerForm("password"), '_label -> "Passwort*:", '_showConstraints -> false)
+
                     <input class="greenlink formlink" type="submit" value="Registrieren" accesskey="s"/>
                     <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
                 </fieldset>
