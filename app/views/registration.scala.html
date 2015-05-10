@@ -41,20 +41,10 @@
             @helper.form(routes.Application.register) {
                 <fieldset>
                     <legend>Persönliche Daten</legend>
-                    <label for="firstname">Vorname:</label>
-                    @helper.inputText(registerForm("firstname"), 'id -> "firstname")
-                    <!-- <input id="firstname" type="text" name="firstname"/> -->
-                    @if(!firstnameOk) {
-                        <div id="error_msg_firstname" role="alert">Der Vorname ist bereits vergeben.</div>
-                    }
+                    @helper.inputText(registerForm("firstname"), '_label -> "Vorname:")
+                    @helper.inputText(registerForm("lastname"), '_label -> "Nachname:")
+                    @helper.inputDate(registerForm("birthdate"), '_label -> "Geburtsdatum:")
 
-                    <label for="lastname">Nachname:</label>
-                    <input id="lastname" type="text" name="lastname"/>
-                    
-                    <label for="birthdate">Geburtstag:</label>
-                    <input id="birthdate" type="date" name="birthdate"/>
-                    <div id="error_msg_birthdate" class="hide" role="alert">Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2010).</div>
-                    
                     <label>Geschlecht:</label>
                     <fieldset class="inputset">
                         <input type="radio" name="gender" id="male" value="male" checked="checked" />

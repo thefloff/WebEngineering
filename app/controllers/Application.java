@@ -71,7 +71,7 @@ public class Application extends Controller {
         defaultValues.birthdate = new Date();
         defaultValues.username = "test";
         defaultValues.password = "test";
-        Form<UserRegister> form = form(UserRegister.class).fill(defaultValues);
+        Form<UserRegister> form = form(UserRegister.class);//.fill(defaultValues);
 
         return ok(registration.render(true, form));
     }
@@ -82,6 +82,7 @@ public class Application extends Controller {
         Form<UserRegister> registrationForm = form(UserRegister.class).bindFromRequest();
 
         if(registrationForm.hasErrors()) {
+            registrationForm.reject("");
             Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
             return badRequest(registration.render(false, form));
         } else {
@@ -141,6 +142,7 @@ public class Application extends Controller {
     }
 
     //on question selected on jeopardy-page
+    @Security.Authenticated(Authentication.class)
     public static Result questionSelected() {
         Form<QuestionSelection> questionSelectionForm = form(QuestionSelection.class).bindFromRequest();
         int questionNR = questionSelectionForm.get().question_selection;
@@ -150,6 +152,7 @@ public class Application extends Controller {
         return ok(question.render());
     }
 
+    @Security.Authenticated(Authentication.class)
     public static Result answersSelected() {
         Form<AnswerSelection> answerSelectionForm = form(AnswerSelection.class).bindFromRequest();
         List<Integer> answers = answerSelectionForm.get().answers;
@@ -157,10 +160,12 @@ public class Application extends Controller {
         return ok(jeopardy.render());
     }
 
+    @Security.Authenticated(Authentication.class)
     public static Result newGame() {
         return ok(jeopardy.render());
     }
 
+    @Security.Authenticated(Authentication.class)
     public static Result winner() {
         return ok(winner.render());
     }
