@@ -78,18 +78,8 @@ public class Application extends Controller {
 
     public static Result answersSelected() {
         Form<AnswerSelection> answerSelectionForm = form(AnswerSelection.class).bindFromRequest();
-
-        String answerString;
-        if (answerSelectionForm.get().answers == null) {
-            answerString = "null";
-        } else {
-            List<Integer> answers = answerSelectionForm.get().answers;
-            answerString = "";
-            for (int i : answers) {
-                answerString += (" " + i);
-            }
-        }
-        Logger.debug(answerString);
+        List<Integer> answers = answerSelectionForm.get().answers;
+        
         return ok(jeopardy.render());
     }
 
