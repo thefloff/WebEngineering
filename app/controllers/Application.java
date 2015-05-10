@@ -1,9 +1,6 @@
 package controllers;
 
-import at.ac.tuwien.big.we15.lab2.api.Avatar;
-import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
-import at.ac.tuwien.big.we15.lab2.api.JeopardyGame;
-import at.ac.tuwien.big.we15.lab2.api.QuestionDataProvider;
+import at.ac.tuwien.big.we15.lab2.api.*;
 import at.ac.tuwien.big.we15.lab2.api.impl.JSONQuestionDataProvider;
 import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
 import model.UserJPA;
