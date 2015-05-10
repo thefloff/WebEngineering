@@ -73,7 +73,7 @@ public class Application extends Controller {
         defaultValues.password = "test";
         Form<UserRegister> form = form(UserRegister.class);//.fill(defaultValues);
 
-        return ok(registration.render(true, form));
+        return ok(registration.render(form));
     }
 
     //on registration attempt on registration-page
@@ -84,7 +84,7 @@ public class Application extends Controller {
         if(registrationForm.hasErrors()) {
             registrationForm.reject("");
             Form<UserRegister> form = new Form<UserRegister>(UserRegister.class);
-            return badRequest(registration.render(false, form));
+            return badRequest(registration.render(form));
         } else {
             String firstname = registrationForm.get().firstname;
             String lastname = registrationForm.get().lastname;
