@@ -1,4 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿@import play.i18n._
+
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
     <head>
@@ -10,8 +12,8 @@
     </head>
     
     <body id="login-page">
-      <a class="accessibility" href="#login">Zum Login springen</a>
-	  <a class="accessibility" title="Klicke hier um dich zu registrieren" href="register.xhtml" accesskey="r">Registrieren</a>  
+      <a class="accessibility" href="#login">@Messages.get("toLogin")</a>
+	  <a class="accessibility" title=@Messages.get("clickToRegister") href="register.xhtml" accesskey="r">@Messages.get("register")</a>
       <!-- Header -->
       <header role="banner" aria-labelledby="bannerheading">
          <h1 id="bannerheading">
@@ -26,19 +28,19 @@
                 @helper.form(routes.Application.login) {
                     <fieldset>
                         <legend id="logindata">Login</legend>
-                        <label for="username">Benutzername:</label>
+                        <label for="username">@Messages.get("username")</label>
                         <input name="username" id="username" type="text" required="required"/>
-                        <label for="password">Passwort:</label>
+                        <label for="password">@Messages.get("password")</label>
                         <input name="password" id="password" type="password" required="required"/>
-                        <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
+                        <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value=@Messages.get("login")>
                     </fieldset>
                 }
             </section>
             <!-- Register section -->
             <section id="registerforward" aria-labelledby="registerheading">
-                <h2 id="registerheading" class="accessibility">Registrierung</h2>
-                <p id="registerhint">Nicht registriert?</p>
-                <a class="contentlink orangelink" title="Klicke hier um dich zu registrieren" href="registerClicked" accesskey="r">Zur Registrierung</a>
+                <h2 id="registerheading" class="accessibility">@Messages.get("registration")</h2>
+                <p id="registerhint">@Messages.get("notRegistered")</p>
+                <a class="contentlink orangelink" title=@Messages.get("clickToRegister") href="registerClicked" accesskey="r">@Messages.get("toRegistration")</a>
             </section>
         </div>
 
