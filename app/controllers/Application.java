@@ -43,8 +43,8 @@ public class Application extends Controller {
             // todo return with validtor
         }
         if(!users.get(0).getPassword().equals(password)) {
-            Logger.debug("Incorrect password!");#
-            // todo return with validtor 
+            Logger.debug("Incorrect password!");
+            // todo return with validtor
         }
 
         // TODO: check if correct, create game etc
