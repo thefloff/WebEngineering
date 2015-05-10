@@ -5,9 +5,9 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Business Informatics Group Jeopardy! - Gewinnanzeige</title>
-        <link rel="stylesheet" type="text/css" href="style/base.css" />
-        <link rel="stylesheet" type="text/css" href="style/screen.css" />
-		  <script src="js/jquery.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/base.css")' />
+        <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/screen.css")' />
+        <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/framework.js" type="text/javascript"></script>
     </head>
     <body id="winner-page">
@@ -23,7 +23,7 @@
 		<nav role="navigation" aria-labelledby="navheading">
 			<h2 id="navheading" class="accessibility">Navigation</h2>
 			<ul>
-				<li><a class="orangelink navigationlink" id="logoutlink" title="Klicke hier um dich abzumelden" href="login.xhtml" accesskey="l">Abmelden</a></li>
+				<li><a class="orangelink navigationlink" id="logoutlink" title="Klicke hier um dich abzumelden" href="logout" accesskey="l">Abmelden</a></li>
 			</ul>
 		</nav>
       
@@ -35,7 +35,7 @@
             <p class="user-info negative-change">Deadpool hat falsch geantwortet: -500 €</p>
             <section class="playerinfo leader" aria-labelledby="winnerannouncement">
                <h3 id="winnerannouncement">Gewinner: Black Widow</h3>
-               <img class="avatar" src="img/avatar/black-widow.png" alt="Spieler-Avatar Black Widow" />
+               <img class="avatar" src='@routes.Assets.at("images/avatar/black-widow_head.png")' alt="Spieler-Avatar Black Widow" />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
@@ -49,7 +49,7 @@
             </section>
             <section class="playerinfo" aria-labelledby="loserheading">
                <h3 id="loserheading" class="accessibility">Verlierer: Deadpool</h3>
-               <img class="avatar" src="img/avatar/deadpool_head.png" alt="Spieler-Avatar Deadpool" />
+               <img class="avatar" src='@routes.Assets.at("images/avatar/deadpool_head.png")' alt="Spieler-Avatar Deadpool" />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
@@ -64,9 +64,9 @@
          </section>
          <section id="newgame" aria-labelledby="newgameheading">
              <h2 id="newgameheading" class="accessibility">Neues Spiel</h2>
-         	<form action="jeopardy.xhtml" method="post">
+         	@helper.form(routes.Application.newGame) {
                	<input class="clickable orangelink contentlink" id="new_game" type="submit" name="restart" value="Neues Spiel" />
-            </form>
+            }
          </section>
       </div>
         <!-- footer -->

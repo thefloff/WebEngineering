@@ -120,7 +120,15 @@ public class Application extends Controller {
             }
         }
         Logger.debug(answerString);
-       return ok(main.render(answerString, null));
+        return ok(jeopardy.render());
+    }
+
+    public static Result newGame() {
+        return ok(jeopardy.render());
+    }
+
+    public static Result winner() {
+        return ok(winner.render());
     }
 
     // TODO: MISSING:   question -> jeopardy
