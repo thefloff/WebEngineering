@@ -57,8 +57,9 @@ public class Application extends Controller {
         JeopardyGame game = factory.createGame(users.get(0));
         games.put(username, game);
         session("connected", username);
+        Logger.debug(game.getHuman().getAvatar().getImageFull());
 
-        return ok(jeopardy.render());
+        return ok(jeopardy.render(game));
     }
 
     //on navigation to register from login-page
@@ -162,6 +163,9 @@ public class Application extends Controller {
         Form<QuestionSelection> questionSelectionForm = form(QuestionSelection.class).bindFromRequest();
         int questionNR = questionSelectionForm.get().question_selection;
 
+        JeopardyGame game = games.get(session().get("connected"));
+        game.chooseHumanQuestion(questionNR);
+
         // TODO: set question for next page
 
         return ok(question.render());
@@ -171,13 +175,19 @@ public class Application extends Controller {
     public static Result answersSelected() {
         Form<AnswerSelection> answerSelectionForm = form(AnswerSelection.class).bindFromRequest();
         List<Integer> answers = answerSelectionForm.get().answers;
-        
-        return ok(jeopardy.render());
+
+        JeopardyGame game = games.get(session().get("connected"));
+        game.answerHumanQuestion(answers);
+        if(game.isGameOver()) {
+            return ok(winner.render());
+        }
+        return ok(jeopardy.render(game));
     }
 
     @Security.Authenticated(Authentication.class)
     public static Result newGame() {
-        return ok(jeopardy.render());
+        JeopardyGame game = games.get(session().get("connected"));
+        return ok(jeopardy.render(game));
     }
 
     @Security.Authenticated(Authentication.class)

@@ -1,3 +1,7 @@
+@import at.ac.tuwien.big.we15.lab2.api.JeopardyGame
+
+@(game: JeopardyGame)
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -34,29 +38,29 @@
             <h2 id="gameinfoinfoheading" class="accessibility">Spielinformationen</h2>
             <section id="firstplayer" class="playerinfo leader" aria-labelledby="firstplayerheading">
                <h3 id="firstplayerheading" class="accessibility">Führender Spieler</h3>
-               <img class="avatar" src='@routes.Assets.at("images/avatar/black-widow_head.png")' alt="Spieler-Avatar Black Widow" />
+               <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getLeader().getUser().getAvatar().getImageFull())' alt='"Spieler-Avatar "+@game.getLeader().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
-                     <td class="playername">Black Widow (Du)</td>
+                     <td class="playername">@game.getLeader().getUser().getName()</td>
                   </tr>
                   <tr>
                      <th class="accessibility">Spielerpunkte</th>
-                     <td class="playerpoints">2000 €</td>
+                     <td class="playerpoints">@game.getLeader().getProfit() €</td>
                   </tr>
                </table>
             </section>
             <section id="secondplayer" class="playerinfo" aria-labelledby="secondplayerheading">
                <h3 id="secondplayerheading" class="accessibility">Zweiter Spieler</h3>
-               <img class="avatar" src='@routes.Assets.at("images/avatar/deadpool_head.png")' alt="Spieler-Avatar Deadpool" />
+                <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getSecond().getUser().getAvatar().getImageFull())' alt='"Spieler-Avatar "+@game.getSecond().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
-                     <td class="playername">Deadpool</td>
+                     <td class="playername">@game.getSecond().getUser().getName()</td>
                   </tr>
                   <tr>
                      <th class="accessibility">Spielerpunkte</th>
-                     <td class="playerpoints">400 €</td>
+                     <td class="playerpoints">@game.getSecond().getProfit() €</td>
                   </tr>
                </table>
             </section>
