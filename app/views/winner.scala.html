@@ -1,3 +1,7 @@
+@import at.ac.tuwien.big.we15.lab2.api.JeopardyGame
+
+@(game: JeopardyGame)
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -34,30 +38,30 @@
             <p class="user-info positive-change">Du hast richtig geantwortet: +1000 €</p>
             <p class="user-info negative-change">Deadpool hat falsch geantwortet: -500 €</p>
             <section class="playerinfo leader" aria-labelledby="winnerannouncement">
-               <h3 id="winnerannouncement">Gewinner: Black Widow</h3>
-               <img class="avatar" src='@routes.Assets.at("images/avatar/black-widow_head.png")' alt="Spieler-Avatar Black Widow" />
+               <h3 id="winnerannouncement">Gewinner: @game.getWinner().getUser().getName()</h3>
+                <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getWinner().getUser().getAvatar().getImageFull())' alt='"Spieler-Avatar "+@game.getWinner().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
-                     <td class="playername">Black Widow</td>
+                     <td class="playername">@game.getLeader().getUser().getName()</td>
                   </tr>
                   <tr>
                      <th class="accessibility">Spielerpunkte</th>
-                     <td class="playerpoints">€ 2000</td>
+                     <td class="playerpoints">€ @game.getWinner().getProfit()</td>
                   </tr>
                </table>
             </section>
             <section class="playerinfo" aria-labelledby="loserheading">
-               <h3 id="loserheading" class="accessibility">Verlierer: Deadpool</h3>
-               <img class="avatar" src='@routes.Assets.at("images/avatar/deadpool_head.png")' alt="Spieler-Avatar Deadpool" />
+               <h3 id="loserheading" class="accessibility">Verlierer: @game.getLoser().getUser().getName()</h3>
+                <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getLoser().getUser().getAvatar().getImageHead())' alt='"Spieler-Avatar "+@game.getLoser().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
-                     <td class="playername">Deadpool</td>
+                     <td class="playername">@game.getLoser().getUser().getName()</td>
                   </tr>
                   <tr>
                      <th class="accessibility">Spielerpunkte</th>
-                     <td class="playerpoints">€ 400</td>
+                     <td class="playerpoints">€ @game.getLoser().getProfit()</td>
                   </tr>
                </table>
             </section>

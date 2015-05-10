@@ -71,12 +71,9 @@ public class Application extends Controller {
         }
 
 
-
         JeopardyGame game = factory.createGame(users.get(0));
         games.put(username, game);
         session("connected", username);
-        Logger.debug(game.getHuman().getAvatar().getImageFull());
-
         return ok(jeopardy.render(game));
     }
 
@@ -172,7 +169,6 @@ public class Application extends Controller {
             games.remove(username);
             session().clear();
         }
-        // TODO: end game etc
 
         return ok(authentication.render());
     }
@@ -188,7 +184,7 @@ public class Application extends Controller {
 
         // TODO: set question for next page
 
-        return ok(question.render());
+        return ok(question.render(game));
     }
 
     @Security.Authenticated(Authentication.class)
@@ -199,20 +195,25 @@ public class Application extends Controller {
         JeopardyGame game = games.get(session().get("connected"));
         game.answerHumanQuestion(answers);
         if(game.isGameOver()) {
-            return ok(winner.render());
+            return ok(winner.render(game));
         }
         return ok(jeopardy.render(game));
     }
 
     @Security.Authenticated(Authentication.class)
     public static Result newGame() {
-        JeopardyGame game = games.get(session().get("connected"));
+        String username = session("connected");
+        JeopardyGame oldGame = games.get(username);
+        JeopardyGame game = factory.createGame(oldGame.getHuman());
+        games.put(username, game);
+
         return ok(jeopardy.render(game));
     }
 
     @Security.Authenticated(Authentication.class)
     public static Result winner() {
-        return ok(winner.render());
+        JeopardyGame game = games.get(session().get("connected"));
+        return ok(winner.render(game));
     }
 
     // TODO: MISSING:   question -> jeopardy

@@ -38,7 +38,7 @@
             <h2 id="gameinfoinfoheading" class="accessibility">Spielinformationen</h2>
             <section id="firstplayer" class="playerinfo leader" aria-labelledby="firstplayerheading">
                <h3 id="firstplayerheading" class="accessibility">Führender Spieler</h3>
-               <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getLeader().getUser().getAvatar().getImageFull())' alt='"Spieler-Avatar "+@game.getLeader().getUser().getAvatar().getName()' />
+               <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getLeader().getUser().getAvatar().getImageHead())' alt='"Spieler-Avatar "+@game.getLeader().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
@@ -52,7 +52,7 @@
             </section>
             <section id="secondplayer" class="playerinfo" aria-labelledby="secondplayerheading">
                <h3 id="secondplayerheading" class="accessibility">Zweiter Spieler</h3>
-                <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getSecond().getUser().getAvatar().getImageFull())' alt='"Spieler-Avatar "+@game.getSecond().getUser().getAvatar().getName()' />
+                <img class="avatar" src='@routes.Assets.at("images/avatar/" + game.getSecond().getUser().getAvatar().getImageHead())' alt='"Spieler-Avatar "+@game.getSecond().getUser().getAvatar().getName()' />
                <table>
                   <tr>
                      <th class="accessibility">Spielername</th>
