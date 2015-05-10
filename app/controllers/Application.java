@@ -1,6 +1,9 @@
 package controllers;
 
 import at.ac.tuwien.big.we15.lab2.api.Avatar;
+import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
+import at.ac.tuwien.big.we15.lab2.api.JeopardyGame;
+import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
 import model.UserJPA;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
@@ -8,9 +11,8 @@ import play.mvc.*;
 import play.data.Form;
 import views.html.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import play.Logger;
 
 import javax.persistence.Query;
@@ -18,6 +20,9 @@ import javax.persistence.Query;
 import static play.data.Form.form;
 
 public class Application extends Controller {
+
+    private static JeopardyFactory factory = new PlayJeopardyFactory("data.de.json");
+    private static Map<String, JeopardyGame> games = new HashMap<>();
 
     //show login page
     public static Result index() {
@@ -47,7 +52,9 @@ public class Application extends Controller {
             // todo return with validtor
         }
 
-        // TODO: check if correct, create game etc
+        JeopardyGame game = factory.createGame(users.get(0));
+        games.put(username, game);
+        session("connected", username);
 
         return ok(jeopardy.render());
     }
@@ -105,7 +112,11 @@ public class Application extends Controller {
 
     //on logout pressed on any page
     public static Result logout() {
-
+        String username = session("connected");
+        if(username !=null) {
+            games.remove(username);
+            session().clear();
+        }
         // TODO: end game etc
 
         return ok(authentication.render());
