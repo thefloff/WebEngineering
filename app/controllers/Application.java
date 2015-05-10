@@ -31,8 +31,22 @@ public class Application extends Controller {
         String username = loginForm.get().username;
         String password = loginForm.get().password;
 
-        Query q = JPA.em().createQuery("select p from UserJPA p where name = ?1");
-       // q.setParameter();
+        Logger.debug("Login:\n" +
+                "username: "+ username + "\n" +
+                "password: " + password);
+
+        Query q = JPA.em().createQuery("select p from UserJPA p where name = :name");
+        q.setParameter("name", username);
+        List<UserJPA> users = q.getResultList();
+        if(users.size() != 1) {
+             Logger.debug("User " + username + " not found!");
+            // todo return with validtor
+        }
+        if(!users.get(0).getPassword().equals(password)) {
+            Logger.debug("Incorrect password!");#
+            // todo return with validtor 
+        }
+
         // TODO: check if correct, create game etc
 
         return ok(jeopardy.render());
@@ -55,7 +69,8 @@ public class Application extends Controller {
         String username = registrationForm.get().username;
         String password = registrationForm.get().password;
 
-        Logger.debug("firstname: " + firstname + "\n" +
+        Logger.debug("Register:\n" +
+                "firstname: " + firstname + "\n" +
                 "lastname: "+ lastname + "\n" +
                 "birthdate: "+ birthdate +"\n" +
                 "gender: "+ gender + "\n"+
