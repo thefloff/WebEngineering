@@ -52,7 +52,7 @@ public class Application extends Controller {
                 "avatar: "+ avatar + "\n" +
                 "username: "+ username + "\n" +
                 "password: " + password);
-        
+
         // TODO: check if ok, create user in DB etc
 
         return ok(authentication.render());
