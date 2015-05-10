@@ -1,3 +1,4 @@
+@import play.i18n.Messages
 
 @import controllers.Application.UserRegister
 
@@ -30,7 +31,7 @@
 		<nav role="navigation" aria-labelledby="navheading">
 			<h2 id="navheading" class="accessibility">Navigation</h2>
 			<ul>
-				<li><a class="orangelink navigationlink" id="loginlink" title="Klicke hier um dich anzumelden" href="index" accesskey="l">Anmelden</a></li>
+				<li><a class="orangelink navigationlink" id="loginlink" title="Klicke hier um dich anzumelden" href="index" accesskey="l">@Messages.get("login")</a></li>
 			</ul>
 		</nav>
       
@@ -40,23 +41,23 @@
             <h2 id="registerheading" class="accessibility">Registrierung</h2>
             @helper.form(routes.Application.register) {
                 <fieldset>
-                    <legend>Persönliche Daten</legend>
-                    @helper.inputText(registerForm("firstname"), '_label -> "Vorname:")
-                    @helper.inputText(registerForm("lastname"), '_label -> "Nachname:")
-                    @helper.inputDate(registerForm("birthdate"), '_label -> "Geburtsdatum:")
+                    <legend>@Messages.get("personalData")</legend>
+                    @helper.inputText(registerForm("firstname"), '_label -> Messages.get("firstName"))
+                    @helper.inputText(registerForm("lastname"), '_label -> Messages.get("lastName"))
+                    @helper.inputDate(registerForm("birthdate"), '_label -> Messages.get("birthday"))
 
-                    <label>Geschlecht:</label>
+                    <label>@Messages.get("gender")</label>
                     <fieldset class="inputset">
                         <input type="radio" name="gender" id="male" value="male" checked="checked" />
-                        <label for="male">Männlich</label>
+                        <label for="male">@Messages.get("male")</label>
                         <input type="radio" name="gender" id="female" value="female" />
-                        <label for="female">Weiblich</label>
+                        <label for="female">@Messages.get("female")</label>
                     </fieldset>
                     
                     
                 </fieldset>
                 <fieldset>
-                    <legend>Spielerdaten</legend>
+                    <legend>@Messages.get("playerData")</legend>
                     <label for="avatar">Avatar:</label>
                     <select id="avatar" name="avatar">
                         <option value="aldrich-killian">Aldrich Killian</option>
@@ -103,12 +104,12 @@
 						<option value="wolverine">Wolverine</option>
                     </select>
 
-                    @helper.inputText(registerForm("username"), '_label -> "Benutzername*:", '_showConstraints -> false)
+                    @helper.inputText(registerForm("username"), '_label -> Messages.get("regUsername"), '_showConstraints -> false)
 
-                    @helper.inputPassword(registerForm("password"), '_label -> "Passwort*:", '_showConstraints -> false)
+                    @helper.inputPassword(registerForm("password"), '_label -> Messages.get("regPassword"), '_showConstraints -> false)
 
-                    <input class="greenlink formlink" type="submit" value="Registrieren" accesskey="s"/>
-                    <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
+                    <input class="greenlink formlink" type="submit" value=@Messages.get("registration") accesskey="s"/>
+                    <p id="requiredhint">@Messages.get("regHint")</p>
                 </fieldset>
             }
         </div>
